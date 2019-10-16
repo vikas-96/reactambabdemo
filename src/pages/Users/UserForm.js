@@ -32,7 +32,7 @@ const UserForm = props => {
   let cityoptions = getCityKeyValue(props.statedata.city);
 
   return (
-    <Form onSubmit={props.submithandler}>
+    <Form onSubmit={props.submithandler} encType="multipart/formdata">
       <Row>
         <Col md={4}>
           <FormGroup>
@@ -168,7 +168,7 @@ const UserForm = props => {
         <Col md={4}>
           <FormGroup>
             <Label for="exampleFile">File</Label>
-            <Input type="file" name="file" />
+            <Input type="file" name="file" onChange={props.fileChange} />
           </FormGroup>
         </Col>
       </Row>

@@ -8,15 +8,16 @@ class AddUsers extends React.Component {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      gender: "",
+      first_name: null,
+      last_name: null,
+      email: null,
+      gender: null,
       hob: [],
-      states: "",
-      statesvalue: "",
-      npa_date: "",
-      city: []
+      states: null,
+      statesvalue: null,
+      npa_date: null,
+      city: [],
+      file: null
     };
   }
 
@@ -55,6 +56,15 @@ class AddUsers extends React.Component {
     }
   };
 
+  handleFile = e => {
+    this.setState({
+      [e.target.name]: e.target.files[0]
+    });
+    let File = new FormData();
+    File.append("files", e.target.files[0]);
+    console.log(File.get("files"));
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     // this.props.handleSubmit(data);
@@ -68,6 +78,7 @@ class AddUsers extends React.Component {
         changefunct={this.handleChange}
         SelectChange={this.handleSelectChange}
         handleDate={this.handleDate}
+        fileChange={this.handleFile}
         submithandler={this.handleSubmit}
       />
     );
