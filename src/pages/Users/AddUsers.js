@@ -1,13 +1,11 @@
 import React from "react";
 import UserForm from "./UserForm";
 import { format } from "date-fns";
+import { getCity } from "../../request/users";
 
 class AddUsers extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       first_name: "",
@@ -15,9 +13,10 @@ class AddUsers extends React.Component {
       email: "",
       gender: "",
       hob: [],
-      edu: "",
-      eduvalue: "",
-      npa_date: ""
+      states: "",
+      statesvalue: "",
+      npa_date: "",
+      city: []
     };
   }
 
@@ -46,6 +45,14 @@ class AddUsers extends React.Component {
       [componentName.name]: e,
       [componentName.name + "value"]: e.value
     });
+    if (componentName.name === "states") {
+      // city api called
+      getCity(e.value).then(response =>
+        this.setState({
+          city: response.data
+        })
+      );
+    }
   };
 
   handleSubmit = e => {

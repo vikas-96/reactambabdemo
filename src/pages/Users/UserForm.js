@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Form, FormGroup, Input, Label, Row, Col } from "reactstrap";
+import { Form, FormGroup, Input, Label, Row, Col, Button } from "reactstrap";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// import { parse } from "date-fns";
+import { getStates } from "../../request/users";
+import { getKeyValue, getCityKeyValue } from "../../helpers/Helpers";
 
 const checkboxes = [
   {
@@ -18,16 +19,17 @@ const checkboxes = [
   }
 ];
 
-const options = [
-  { value: "ssc", label: "Ssc" },
-  { value: "hsc", label: "Hsc" },
-  { value: "ty", label: "Ty" }
-];
-
 const UserForm = props => {
-  const [city, setCity] = useState("");
+  const [states, setStates] = useState("");
 
-  useEffect(() => {});
+  useEffect(() => {
+    getStates().then(res => {
+      setStates(res);
+    });
+  }, []);
+
+  let statesoptions = getKeyValue(states);
+  let cityoptions = getCityKeyValue(props.statedata.city);
 
   return (
     <Form onSubmit={props.submithandler}>
@@ -107,12 +109,11 @@ const UserForm = props => {
             <br />
             <Row>
               {checkboxes.map((item, index) => (
-                <Col md={2}>
+                <Col md={2} key={index}>
                   <label>
                     {item.label}
                     <Input
                       type="checkbox"
-                      key={index}
                       name={item.name}
                       value={item.value}
                       // checked={props.statedata.checkedItems.get(item.name)}
@@ -126,17 +127,28 @@ const UserForm = props => {
         </Col>
         <Col md={4}>
           <FormGroup>
-            <Label for="edu">Edu</Label>
+            <Label for="states">States</Label>
             <Select
-              name="edu"
-              value={props.statedata.edu}
+              name="states"
+              defaultValue={props.statedata.states}
               onChange={props.SelectChange}
-              options={options}
+              options={statesoptions}
             />
           </FormGroup>
         </Col>
       </Row>
       <Row>
+        <Col md={4}>
+          <FormGroup>
+            <Label for="city">City</Label>
+            <Select
+              name="city"
+              value={props.statedata.city}
+              onChange={props.SelectChange}
+              options={cityoptions}
+            />
+          </FormGroup>
+        </Col>
         <Col md={4}>
           <FormGroup>
             <Label for="npa_date">Select Date</Label>
@@ -153,9 +165,17 @@ const UserForm = props => {
             />
           </FormGroup>
         </Col>
+        <Col md={4}>
+          <FormGroup>
+            <Label for="exampleFile">File</Label>
+            <Input type="file" name="file" />
+          </FormGroup>
+        </Col>
       </Row>
       <Col md={4}>
-        <Input type="submit" />
+        <Button type="submit" outline color="success">
+          Submit
+        </Button>
       </Col>
     </Form>
   );
