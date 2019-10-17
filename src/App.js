@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Router } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 // import pages from "./pages";
 import Root from "./components/Layouts/Root";
@@ -10,9 +10,9 @@ const browserHistory = createBrowserHistory();
 class App extends Component {
   render() {
     return (
-        <Router history={browserHistory}>
-          <Root></Root>
-        </Router>
+      <Router history={browserHistory}>
+        <Root></Root>
+      </Router>
     );
   }
 }

@@ -1,23 +1,23 @@
 import React from "react";
 import UserForm from "./UserForm";
 import { format } from "date-fns";
-import { getCity } from "../../request/users";
+import { getCity, uploadFile, createUser } from "../../request/users";
 
 class AddUsers extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      first_name: null,
-      last_name: null,
-      email: null,
-      gender: null,
+      first_name: "",
+      last_name: "",
+      email: "",
+      gender: "",
       hob: [],
-      states: null,
-      statesvalue: null,
-      npa_date: null,
+      states: "",
+      statesvalue: "",
+      npa_date: "",
       city: [],
-      file: null
+      file: ""
     };
   }
 
@@ -57,18 +57,23 @@ class AddUsers extends React.Component {
   };
 
   handleFile = e => {
-    this.setState({
-      [e.target.name]: e.target.files[0]
-    });
+    let name = e.target.name;
     let File = new FormData();
     File.append("files", e.target.files[0]);
-    console.log(File.get("files"));
+    uploadFile(File).then(response => {
+      this.setState({
+        [name]: response.image
+      });
+    });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    // this.props.handleSubmit(data);
-    console.log(this.state);
+    createUser(this.state)
+      .then(res => {
+        this.props.history.push("/users");
+      })
+      .catch(err => console.log(err.response.data.errors));
   };
 
   render() {
