@@ -9,6 +9,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import { connect } from "react-redux";
 
 const { SearchBar } = Search;
 
@@ -90,8 +91,8 @@ class Listing extends React.Component {
           return (
             <Media
               object
-              src={process.env.REACT_APP_API_URL + "/images/demo/" + value}
-              alt="Generic placeholder image"
+              src={process.env.REACT_APP_API_URL + "/" + value}
+              alt="Profile image"
               height="64px"
               width="90px"
             />
@@ -148,9 +149,18 @@ class Listing extends React.Component {
             </div>
           )}
         </ToolkitProvider>
+        {/* {this.props.users.map(users => {
+          return <li>{users.title}</li>;
+        })} */}
       </div>
     );
   }
 }
 
-export default Listing;
+function mapStateToProps(state) {
+  return {
+    users: state.users
+  };
+}
+
+export default connect(mapStateToProps)(Listing);
