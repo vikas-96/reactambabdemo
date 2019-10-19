@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import { Switch, Route } from "react-router-dom";
 import Users from "../../pages/Users";
 import AddUsers from "../../pages/Users/AddUsers";
+import EditUsers from "../../pages/Users/EditUsers";
 
 const Root = () => {
   return (
@@ -21,6 +22,7 @@ const Root = () => {
               <Switch>
                 <Route exact path="/users" component={Users} />
                 <Route exact path="/users/add" component={AddUsers} />
+                <Route exact path="/users/edit/:id" component={EditUsers} />
                 {/* <Route path="/users">
                                 <About />
                             </Route>

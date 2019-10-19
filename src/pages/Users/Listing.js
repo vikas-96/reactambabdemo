@@ -1,45 +1,35 @@
 import React from "react";
-import { Button, Col, Media } from "reactstrap";
-import { getUsers, deleteUser } from "../../request/users";
+import { Button, Col, Media, Row } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import filterFactory from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import { connect } from "react-redux";
+import * as userActions from "../../store/users/actions";
+import { Link } from "react-router-dom";
 
 const { SearchBar } = Search;
 
 class Listing extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
-    };
-  }
-
   componentDidMount() {
-    getUsers().then(res => {
-      this.setState({ users: res.data });
-    });
+    this.props.dispatch(userActions.fetchUsers());
   }
 
   deleteUser = id => {
     let r = window.confirm("Do you want to delete this user");
     if (r === true) {
-      deleteUser(id).then(res => {
-        const usernewaray = this.state.users.filter(row => row.id !== id);
-        this.setState({ users: usernewaray });
-      });
+      this.props.dispatch(userActions.deleteUsers(id, this.props.users));
     }
   };
 
   columns = () => {
     return [
       {
+        dataField: "",
         text: "Sr No.",
         formatter: (value, row, index) => {
           return index + 1;
@@ -100,6 +90,7 @@ class Listing extends React.Component {
         }
       },
       {
+        dataField: "",
         text: "Actions",
         formatter: this.cellButton
       }
@@ -109,16 +100,18 @@ class Listing extends React.Component {
   cellButton = (cell, row) => {
     return (
       <div>
-        <Button color="primary" size="sm">
-          Edit
-        </Button>{" "}
-        <Button
-          color="danger"
-          size="sm"
-          onClick={() => this.deleteUser(row.id)}
-        >
-          Delete
-        </Button>
+        <Row>
+          <Link
+            to={"/users/edit/" + row.id}
+            className="btn btn-primary"
+            size="sm"
+          >
+            Edit
+          </Link>
+          <Button color="danger" onClick={() => this.deleteUser(row.id)}>
+            Delete
+          </Button>
+        </Row>
       </div>
     );
   };
@@ -128,7 +121,7 @@ class Listing extends React.Component {
         <h2 className="text-center">User Details</h2>
         <ToolkitProvider
           keyField="id"
-          data={this.state.users}
+          data={this.props.users}
           columns={this.columns()}
           striped
           bootstrap4
@@ -149,9 +142,6 @@ class Listing extends React.Component {
             </div>
           )}
         </ToolkitProvider>
-        {/* {this.props.users.map(users => {
-          return <li>{users.title}</li>;
-        })} */}
       </div>
     );
   }
@@ -159,7 +149,7 @@ class Listing extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    users: state.users
+    users: state.users.usersArray
   };
 }
 
