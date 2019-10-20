@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Form, FormGroup, Input, Label, Row, Col, Button } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row,
+  Col,
+  Button,
+  Media
+} from "reactstrap";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getStates } from "../../request/users";
 import { getKeyValue, getCityKeyValue } from "../../helpers/Helpers";
+import _ from "lodash";
 
 const checkboxes = [
   {
@@ -116,7 +126,11 @@ const UserForm = props => {
                       type="checkbox"
                       name={item.name}
                       value={item.value}
-                      // checked={props.statedata.checkedItems.get(item.name)}
+                      checked={
+                        props.statedata.hob.indexOf(item.value) > -1
+                          ? true
+                          : false
+                      }
                       onChange={props.changefunct}
                     />
                   </label>
@@ -169,6 +183,15 @@ const UserForm = props => {
           <FormGroup>
             <Label for="exampleFile">File</Label>
             <Input type="file" name="file" onChange={props.fileChange} />
+            {!_.isEmpty(props.statedata.file) && (
+              <Media
+                object
+                src={process.env.REACT_APP_API_URL + "/" + props.statedata.file}
+                alt="Profile image"
+                height="64px"
+                width="90px"
+              />
+            )}
           </FormGroup>
         </Col>
       </Row>

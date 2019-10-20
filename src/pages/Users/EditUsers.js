@@ -14,7 +14,7 @@ class EditUsers extends React.Component {
       last_name: "",
       email: "",
       gender: "",
-      hob: [],
+      hob: "",
       states: "",
       statesvalue: "",
       npa_date: "",
@@ -71,6 +71,7 @@ class EditUsers extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // console.log(this.state);
     createUser(this.state)
       .then(res => {
         this.props.history.push("/users");
@@ -81,12 +82,26 @@ class EditUsers extends React.Component {
   componentDidMount() {
     const userid = this.props.match.params.id;
     const userdata = this.props.users;
-    let obj = _.takeWhile(userdata, { id: userid });
-    console.log(obj);
+    let obj = _.filter(userdata, { id: userid });
+    // console.log(obj);
+    // console.log(obj[0].city);
+    this.setState({
+      first_name: obj[0].first_name,
+      last_name: obj[0].last_name,
+      email: obj[0].email,
+      gender: obj[0].gender,
+      hob: obj[0].hob,
+      states: "",
+      statesvalue: "",
+      npa_date: obj[0].npa_date,
+      city: [],
+      file: obj[0].file
+    });
+
+    // console.log(this.state);
   }
 
   render() {
-    console.log("qwerty");
     return (
       <UserForm
         statedata={this.state}
