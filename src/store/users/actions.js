@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { getUsers, deleteUser } from "../../request/users";
+import { getUsers, deleteUser, getUser } from "../../request/users";
 
 export function fetchUsers() {
   return async (dispatch, getState) => {
@@ -21,5 +21,16 @@ export function deleteUsers(id, userState) {
         dispatch(types.deleteUserSuccess(usernewaray));
       })
       .catch(error => dispatch(types.deleteUserFailure(error)));
+  };
+}
+
+export function getUserData(id) {
+  return async dispatch => {
+    dispatch(types.getUserBegin());
+    return await getUser(id)
+      .then(json => {
+        dispatch(types.getUserSuccess(json));
+      })
+      .catch(error => dispatch(types.getUserFailure(error)));
   };
 }

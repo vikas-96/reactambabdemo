@@ -2,21 +2,23 @@ import React from "react";
 import UserForm from "./UserForm";
 import { format } from "date-fns";
 import { getCity, uploadFile, createUser } from "../../request/users";
+import serialize from "form-serialize";
+import _ from "lodash";
 
 class AddUsers extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      gender: "",
-      hob: [],
+      // first_name: "",
+      // last_name: "",
+      // email: "",
+      // gender: "",
+      // hob: [],
       states: "",
       statesvalue: "",
       npa_date: "",
-      city: [],
+      cities: [],
       file: ""
     };
   }
@@ -26,20 +28,20 @@ class AddUsers extends React.Component {
     this.setState({ [name]: formatedDate });
   };
 
-  handleChange = e => {
-    if (e.target.type !== "checkbox") {
-      this.setState({ [e.target.name]: e.target.value });
-    } else {
-      const checkeds = document.getElementsByName(e.target.name);
-      let checkedArr = [];
-      for (let i = 0; i < checkeds.length; i++) {
-        if (checkeds[i].checked) {
-          checkedArr.push(checkeds[i].value);
-        }
-      }
-      this.setState({ [e.target.name]: checkedArr });
-    }
-  };
+  // handleChange = e => {
+  //   if (e.target.type !== "checkbox") {
+  //     this.setState({ [e.target.name]: e.target.value });
+  //   } else {
+  //     const checkeds = document.getElementsByName(e.target.name);
+  //     let checkedArr = [];
+  //     for (let i = 0; i < checkeds.length; i++) {
+  //       if (checkeds[i].checked) {
+  //         checkedArr.push(checkeds[i].value);
+  //       }
+  //     }
+  //     this.setState({ [e.target.name]: checkedArr });
+  //   }
+  // };
 
   handleSelectChange = (e, componentName) => {
     this.setState({
@@ -50,7 +52,7 @@ class AddUsers extends React.Component {
       // city api called
       getCity(e.value).then(response =>
         this.setState({
-          city: response.data
+          cities: response.data
         })
       );
     }
@@ -69,7 +71,13 @@ class AddUsers extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    createUser(this.state)
+
+    const form = e.target;
+    const data = serialize(form, { hash: true });
+    data["file"] = !_.isEmpty(this.state.file) && this.state.file;
+
+    // console.log(data);
+    createUser(data)
       .then(res => {
         this.props.history.push("/users");
       })

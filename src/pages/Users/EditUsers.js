@@ -4,21 +4,22 @@ import { format } from "date-fns";
 import { getCity, uploadFile, createUser } from "../../request/users";
 import { connect } from "react-redux";
 import _ from "lodash";
+import * as userActions from "../../store/users/actions";
 
 class EditUsers extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      gender: "",
-      hob: "",
+      // first_name: "",
+      // last_name: "",
+      // email: "",
+      // gender: "",
+      // hob: "",
       states: "",
       statesvalue: "",
       npa_date: "",
-      city: [],
+      cities: [],
       file: ""
     };
   }
@@ -81,30 +82,28 @@ class EditUsers extends React.Component {
 
   componentDidMount() {
     const userid = this.props.match.params.id;
-    const userdata = this.props.users;
-    let obj = _.filter(userdata, { id: userid });
-    // console.log(obj);
-    // console.log(obj[0].city);
-    this.setState({
-      first_name: obj[0].first_name,
-      last_name: obj[0].last_name,
-      email: obj[0].email,
-      gender: obj[0].gender,
-      hob: obj[0].hob,
-      states: "",
-      statesvalue: "",
-      npa_date: obj[0].npa_date,
-      city: [],
-      file: obj[0].file
-    });
+    this.props.dispatch(userActions.getUserData(userid));
+    // console.log(this.props);
+  }
 
-    // console.log(this.state);
+  componentDidUpdate() {
+    // !_.isEmpty(this.props.userdata) &&
+    // this.setState({
+    // states: this.props.userdata.statesdata.value,
+    // statesvalue: this.props.userdata.statesdata,
+    // npa_date: this.props.userdata.npa_date,
+    // cities: []
+    // });
   }
 
   render() {
+    console.log(this.props.userdata);
+    let data = !_.isEmpty(this.props.userdata)
+      ? this.props.userdata
+      : this.state;
     return (
       <UserForm
-        statedata={this.state}
+        statedata={data}
         changefunct={this.handleChange}
         SelectChange={this.handleSelectChange}
         handleDate={this.handleDate}
@@ -117,7 +116,7 @@ class EditUsers extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    users: state.users.usersArray
+    userdata: state.users.userDetail
   };
 }
 

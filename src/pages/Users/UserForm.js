@@ -39,7 +39,9 @@ const UserForm = props => {
   }, []);
 
   let statesoptions = getKeyValue(states);
-  let cityoptions = getCityKeyValue(props.statedata.city);
+  let cityoptions = !_.isEmpty(props.statedata.cities)
+    ? getCityKeyValue(props.statedata.cities)
+    : "";
 
   return (
     <Form onSubmit={props.submithandler} encType="multipart/formdata">
@@ -53,7 +55,7 @@ const UserForm = props => {
               id="first_name"
               placeholder="First Name"
               value={props.statedata.first_name}
-              onChange={props.changefunct}
+              // onChange={props.changefunct}
             />
           </FormGroup>
         </Col>
@@ -65,8 +67,8 @@ const UserForm = props => {
               name="last_name"
               id="last_name"
               placeholder="Last Name"
-              value={props.statedata.last_name}
-              onChange={props.changefunct}
+              // value={props.statedata.last_name}
+              // onChange={props.changefunct}
             />
           </FormGroup>
         </Col>
@@ -78,8 +80,8 @@ const UserForm = props => {
               name="email"
               id="email"
               placeholder="Email-Id "
-              value={props.statedata.email}
-              onChange={props.changefunct}
+              // value={props.statedata.email}
+              // onChange={props.changefunct}
             />
           </FormGroup>
         </Col>
@@ -95,8 +97,8 @@ const UserForm = props => {
                   type="radio"
                   name="gender"
                   value="male"
-                  checked={props.statedata.gender === "male"}
-                  onChange={props.changefunct}
+                  // checked={props.statedata.gender === "male"}
+                  // onChange={props.changefunct}
                 />
                 Male
               </Col>
@@ -105,8 +107,8 @@ const UserForm = props => {
                   type="radio"
                   name="gender"
                   value="female"
-                  checked={props.statedata.gender === "female"}
-                  onChange={props.changefunct}
+                  // checked={props.statedata.gender === "female"}
+                  // onChange={props.changefunct}
                 />
                 Female
               </Col>
@@ -126,12 +128,12 @@ const UserForm = props => {
                       type="checkbox"
                       name={item.name}
                       value={item.value}
-                      checked={
-                        props.statedata.hob.indexOf(item.value) > -1
-                          ? true
-                          : false
-                      }
-                      onChange={props.changefunct}
+                      // checked={
+                      //   props.statedata.hob.indexOf(item.value) > -1
+                      //     ? true
+                      //     : false
+                      // }
+                      // onChange={props.changefunct}
                     />
                   </label>
                 </Col>
@@ -144,7 +146,7 @@ const UserForm = props => {
             <Label for="states">States</Label>
             <Select
               name="states"
-              defaultValue={props.statedata.states}
+              value={props.statedata.states}
               onChange={props.SelectChange}
               options={statesoptions}
             />
@@ -154,10 +156,10 @@ const UserForm = props => {
       <Row>
         <Col md={4}>
           <FormGroup>
-            <Label for="city">City</Label>
+            <Label for="cities">City</Label>
             <Select
-              name="city"
-              value={props.statedata.city}
+              name="cities"
+              value={props.statedata.cities}
               onChange={props.SelectChange}
               options={cityoptions}
             />
@@ -165,7 +167,7 @@ const UserForm = props => {
         </Col>
         <Col md={4}>
           <FormGroup>
-            <Label for="npa_date">Select Date</Label>
+            <Label for="npa_date">NPA Date</Label>
             <DatePicker
               name="npa_date"
               dateFormat="yyyy-MM-dd"
@@ -182,7 +184,12 @@ const UserForm = props => {
         <Col md={4}>
           <FormGroup>
             <Label for="exampleFile">File</Label>
-            <Input type="file" name="file" onChange={props.fileChange} />
+            <Input
+              type="file"
+              name="file"
+              onChange={props.fileChange}
+              // value={props.statedata.file}
+            />
             {!_.isEmpty(props.statedata.file) && (
               <Media
                 object

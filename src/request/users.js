@@ -71,3 +71,15 @@ export function deleteUser(data) {
     })
     .then(response => response.data);
 }
+
+//get user by id
+export function getUser(id) {
+  return axios
+    .get(process.env.REACT_APP_API_URL + "/api/usersdemo/" + id, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.data);
+}
