@@ -74,7 +74,7 @@ class AddUsers extends React.Component {
 
     const form = e.target;
     const data = serialize(form, { hash: true });
-    data["file"] = !_.isEmpty(this.state.file) && this.state.file;
+    if (!_.isEmpty(this.state.file)) data["file"] = this.state.file;
 
     // console.log(data);
     createUser(data)

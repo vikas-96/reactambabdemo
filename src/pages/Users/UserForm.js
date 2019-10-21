@@ -43,6 +43,10 @@ const UserForm = props => {
     ? getCityKeyValue(props.statedata.cities)
     : "";
 
+  const gender = !_.isEmpty(props.statedata.gender)
+    ? props.statedata.gender
+    : "";
+
   return (
     <Form onSubmit={props.submithandler} encType="multipart/formdata">
       <Row>
@@ -54,7 +58,11 @@ const UserForm = props => {
               name="first_name"
               id="first_name"
               placeholder="First Name"
-              value={props.statedata.first_name}
+              value={
+                !_.isEmpty(props.statedata.first_name)
+                  ? props.statedata.first_name
+                  : ""
+              }
               // onChange={props.changefunct}
             />
           </FormGroup>
@@ -67,7 +75,11 @@ const UserForm = props => {
               name="last_name"
               id="last_name"
               placeholder="Last Name"
-              // value={props.statedata.last_name}
+              value={
+                !_.isEmpty(props.statedata.last_name)
+                  ? props.statedata.last_name
+                  : ""
+              }
               // onChange={props.changefunct}
             />
           </FormGroup>
@@ -80,7 +92,9 @@ const UserForm = props => {
               name="email"
               id="email"
               placeholder="Email-Id "
-              // value={props.statedata.email}
+              value={
+                !_.isEmpty(props.statedata.email) ? props.statedata.email : ""
+              }
               // onChange={props.changefunct}
             />
           </FormGroup>
@@ -97,6 +111,7 @@ const UserForm = props => {
                   type="radio"
                   name="gender"
                   value="male"
+                  checked={gender === "male"}
                   // checked={props.statedata.gender === "male"}
                   // onChange={props.changefunct}
                 />
@@ -107,6 +122,7 @@ const UserForm = props => {
                   type="radio"
                   name="gender"
                   value="female"
+                  checked={gender === "female"}
                   // checked={props.statedata.gender === "female"}
                   // onChange={props.changefunct}
                 />
@@ -128,11 +144,13 @@ const UserForm = props => {
                       type="checkbox"
                       name={item.name}
                       value={item.value}
-                      // checked={
-                      //   props.statedata.hob.indexOf(item.value) > -1
-                      //     ? true
-                      //     : false
-                      // }
+                      checked={
+                        !_.isEmpty(props.statedata.hob)
+                          ? props.statedata.hob.indexOf(item.value) > -1
+                            ? true
+                            : false
+                          : ""
+                      }
                       // onChange={props.changefunct}
                     />
                   </label>
@@ -146,7 +164,7 @@ const UserForm = props => {
             <Label for="states">States</Label>
             <Select
               name="states"
-              value={props.statedata.states}
+              value={props.statedata.statesdata}
               onChange={props.SelectChange}
               options={statesoptions}
             />

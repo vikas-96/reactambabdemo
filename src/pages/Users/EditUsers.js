@@ -5,6 +5,7 @@ import { getCity, uploadFile, createUser } from "../../request/users";
 import { connect } from "react-redux";
 import _ from "lodash";
 import * as userActions from "../../store/users/actions";
+import serialize from "form-serialize";
 
 class EditUsers extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class EditUsers extends React.Component {
       [componentName.name]: e,
       [componentName.name + "value"]: e.value
     });
+    console.log("12");
     if (componentName.name === "states") {
       // city api called
       getCity(e.value).then(response =>
@@ -72,32 +74,26 @@ class EditUsers extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // console.log(this.state);
-    createUser(this.state)
-      .then(res => {
-        this.props.history.push("/users");
-      })
-      .catch(err => console.log(err.response.data.errors));
+
+    const form = e.target;
+    const data = serialize(form, { hash: true });
+    if (!_.isEmpty(this.state.file)) data["file"] = this.state.file;
+
+    console.log(data);
+
+    // createUser(this.state)
+    //   .then(res => {
+    //     this.props.history.push("/users");
+    //   })
+    //   .catch(err => console.log(err.response.data.errors));
   };
 
   componentDidMount() {
     const userid = this.props.match.params.id;
     this.props.dispatch(userActions.getUserData(userid));
-    // console.log(this.props);
-  }
-
-  componentDidUpdate() {
-    // !_.isEmpty(this.props.userdata) &&
-    // this.setState({
-    // states: this.props.userdata.statesdata.value,
-    // statesvalue: this.props.userdata.statesdata,
-    // npa_date: this.props.userdata.npa_date,
-    // cities: []
-    // });
   }
 
   render() {
-    console.log(this.props.userdata);
     let data = !_.isEmpty(this.props.userdata)
       ? this.props.userdata
       : this.state;
