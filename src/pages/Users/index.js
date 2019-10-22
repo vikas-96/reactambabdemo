@@ -5,7 +5,9 @@ import UserListing from "./Listing";
 const Users = () => {
   return (
     <React.Fragment>
-      <Link to="/users/add">Add Users</Link>
+      <Link to="/users/add" className="btn btn-success float-right">
+        Add Users
+      </Link>
       <UserListing />
     </React.Fragment>
   );

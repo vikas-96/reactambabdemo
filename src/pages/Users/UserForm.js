@@ -33,15 +33,11 @@ const checkboxes = [
   }
 ];
 
-// const UserForm = props => {
 class UserFrom extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
       gender: "",
       hob: [],
       states: "",
@@ -52,21 +48,39 @@ class UserFrom extends React.Component {
       allstates: "",
       allcities: ""
     };
+
+    this.getStates();
   }
 
-  componentDidMount() {
-    // const statesoptions = ;
-    // const cityoptions = !_.isEmpty(this.state.cities)
-    //   ? getCityKeyValue(this.state.cities)
-    //   : "";
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      gender: nextProps.gender,
+      hob: nextProps.hob,
+      states: nextProps.statesdata,
+      cities: nextProps.citiesdata,
+      npa_date: nextProps.npa_date,
+      file: nextProps.file
+    });
 
+    if (!_.isEmpty(nextProps.citiesdata)) {
+      this.getCities(nextProps.statesdata);
+    }
+  }
+
+  getStates = e => {
     getStates().then(res => {
       this.setState({ allstates: getKeyValue(res) });
     });
-    // const userid = this.props.match.params.id;
-    // this.props.dispatch(userActions.getUserData(userid));
-    // console.log(this.props);
-  }
+  };
+
+  getCities = e => {
+    // city api called
+    getCity(e.value).then(response =>
+      this.setState({
+        allcities: getCityKeyValue(response.data)
+      })
+    );
+  };
 
   handleDate = (name, date) => {
     const formatedDate = date ? format(date, "yyyy-MM-dd") : "";
@@ -94,12 +108,7 @@ class UserFrom extends React.Component {
       [componentName.name + "value"]: e.value
     });
     if (componentName.name === "states") {
-      // city api called
-      getCity(e.value).then(response =>
-        this.setState({
-          allcities: getCityKeyValue(response.data)
-        })
-      );
+      this.getCities(e);
     }
   };
 
@@ -118,7 +127,7 @@ class UserFrom extends React.Component {
     e.preventDefault();
     const form = e.target;
     const data = serialize(form, { hash: true });
-    // console.log(this.state);
+    // console.log(data);
     if (!_.isEmpty(this.state.file)) data["file"] = this.state.file;
     this.props.submithandler(data);
   };
@@ -135,10 +144,8 @@ class UserFrom extends React.Component {
                 name="first_name"
                 id="first_name"
                 placeholder="First Name"
-                value={
-                  !_.isEmpty(this.state.first_name) ? this.state.first_name : ""
-                }
-                onChange={this.handleChange}
+                defaultValue={this.props && this.props.first_name}
+                // onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -150,10 +157,8 @@ class UserFrom extends React.Component {
                 name="last_name"
                 id="last_name"
                 placeholder="Last Name"
-                value={
-                  !_.isEmpty(this.state.last_name) ? this.state.last_name : ""
-                }
-                onChange={this.handleChange}
+                defaultValue={this.props && this.props.last_name}
+                // onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -164,9 +169,9 @@ class UserFrom extends React.Component {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Email-Id "
-                value={!_.isEmpty(this.state.email) ? this.state.email : ""}
-                onChange={this.handleChange}
+                placeholder="Email-Id"
+                defaultValue={this.props && this.props.email}
+                // onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -183,7 +188,7 @@ class UserFrom extends React.Component {
                     name="gender"
                     value="male"
                     // checked={gender === "male"}
-                    checked={this.state.gender === "male"}
+                    checked={this.state.gender === "male" ? true : false}
                     onChange={this.handleChange}
                   />
                   Male
@@ -194,7 +199,7 @@ class UserFrom extends React.Component {
                     name="gender"
                     value="female"
                     // checked={gender === "female"}
-                    checked={this.state.gender === "female"}
+                    checked={this.state.gender === "female" ? true : false}
                     onChange={this.handleChange}
                   />
                   Female
@@ -235,7 +240,7 @@ class UserFrom extends React.Component {
               <Label for="states">States</Label>
               <Select
                 name="states"
-                value={this.state.statesdata}
+                value={this.state.states}
                 onChange={this.handleSelectChange}
                 options={this.state.allstates}
               />
@@ -271,12 +276,7 @@ class UserFrom extends React.Component {
           <Col md={4}>
             <FormGroup>
               <Label for="exampleFile">File</Label>
-              <Input
-                type="file"
-                name="file"
-                onChange={this.handleFile}
-                // value={this.state.file}
-              />
+              <Input type="file" name="file" onChange={this.handleFile} />
               {!_.isEmpty(this.state.file) && (
                 <Media
                   object

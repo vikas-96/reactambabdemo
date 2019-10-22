@@ -34,3 +34,9 @@ export function getUserData(id) {
       .catch(error => dispatch(types.getUserFailure(error)));
   };
 }
+
+export function resetAll() {
+  return async (dispatch, getState) => {
+    dispatch(types.resetAll());
+  };
+}

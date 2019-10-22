@@ -1,11 +1,15 @@
 import * as types from "./actionTypes";
 
 const initialState = {
-  usersArray: []
+  usersArray: [],
+  userDetail: {}
 };
 
 export default function reduce(state = initialState, action = {}) {
   switch (action.type) {
+    case types.RESET_ALL:
+      return initialState;
+
     //Fetch User Listing
 
     case types.FETCH_USERS_BEGIN:

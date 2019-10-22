@@ -60,6 +60,18 @@ export function createUser(data) {
     .then(response => response.data);
 }
 
+// update user
+export function updateUser(data, userid) {
+  return axios
+    .put(process.env.REACT_APP_API_URL + "/api/usersdemo/" + userid, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.data);
+}
+
 // delete user
 export function deleteUser(data) {
   return axios
