@@ -1,32 +1,31 @@
 import React from "react";
 import UserForm from "./UserForm";
-import { format } from "date-fns";
-import { getCity, uploadFile, createUser } from "../../request/users";
-import serialize from "form-serialize";
 import _ from "lodash";
 
+import { createUser } from "../../request/users";
+
 class AddUsers extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      // first_name: "",
-      // last_name: "",
-      // email: "",
-      // gender: "",
-      // hob: [],
-      states: "",
-      statesvalue: "",
-      npa_date: "",
-      cities: [],
-      file: ""
-    };
-  }
+  //   this.state = {
+  //     first_name: "",
+  //     last_name: "",
+  //     email: "",
+  //     gender: "",
+  //     hob: [],
+  //     states: "",
+  //     statesvalue: "",
+  //     npa_date: "",
+  //     cities: [],
+  //     file: ""
+  //   };
+  // }
 
-  handleDate = (name, date) => {
-    const formatedDate = date ? format(date, "yyyy-MM-dd") : "";
-    this.setState({ [name]: formatedDate });
-  };
+  // handleDate = (name, date) => {
+  //   const formatedDate = date ? format(date, "yyyy-MM-dd") : "";
+  //   this.setState({ [name]: formatedDate });
+  // };
 
   // handleChange = e => {
   //   if (e.target.type !== "checkbox") {
@@ -43,40 +42,33 @@ class AddUsers extends React.Component {
   //   }
   // };
 
-  handleSelectChange = (e, componentName) => {
-    this.setState({
-      [componentName.name]: e,
-      [componentName.name + "value"]: e.value
-    });
-    if (componentName.name === "states") {
-      // city api called
-      getCity(e.value).then(response =>
-        this.setState({
-          cities: response.data
-        })
-      );
-    }
-  };
+  // handleSelectChange = (e, componentName) => {
+  //   this.setState({
+  //     [componentName.name]: e,
+  //     [componentName.name + "value"]: e.value
+  //   });
+  //   if (componentName.name === "states") {
+  //     // city api called
+  //     getCity(e.value).then(response =>
+  //       this.setState({
+  //         cities: response.data
+  //       })
+  //     );
+  //   }
+  // };
 
-  handleFile = e => {
-    let name = e.target.name;
-    let File = new FormData();
-    File.append("files", e.target.files[0]);
-    uploadFile(File).then(response => {
-      this.setState({
-        [name]: response.image
-      });
-    });
-  };
+  // handleFile = e => {
+  //   let name = e.target.name;
+  //   let File = new FormData();
+  //   File.append("files", e.target.files[0]);
+  //   uploadFile(File).then(response => {
+  //     this.setState({
+  //       [name]: response.image
+  //     });
+  //   });
+  // };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const form = e.target;
-    const data = serialize(form, { hash: true });
-    if (!_.isEmpty(this.state.file)) data["file"] = this.state.file;
-
-    // console.log(data);
+  handleSubmit = data => {
     createUser(data)
       .then(res => {
         this.props.history.push("/users");
@@ -87,11 +79,11 @@ class AddUsers extends React.Component {
   render() {
     return (
       <UserForm
-        statedata={this.state}
-        changefunct={this.handleChange}
-        SelectChange={this.handleSelectChange}
-        handleDate={this.handleDate}
-        fileChange={this.handleFile}
+        // statedata={this.state}
+        // changefunct={this.handleChange}
+        // SelectChange={this.handleSelectChange}
+        // handleDate={this.handleDate}
+        // fileChange={this.handleFile}
         submithandler={this.handleSubmit}
       />
     );
