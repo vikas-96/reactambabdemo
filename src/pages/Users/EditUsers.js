@@ -1,7 +1,7 @@
 import React from "react";
 import UserForm from "./UserForm";
 import { connect } from "react-redux";
-import _ from "lodash";
+// import _ from "lodash";
 import * as userActions from "../../store/users/actions";
 import { updateUser } from "../../request/users";
 

@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "date-fns": "^2.4.1",
+    "formik": "^1.5.8",
     "lodash": "^4.17.15",
     "react": "^16.10.2",
     "react-bootstrap-table-next": "^3.2.1",
@@ -22,7 +23,8 @@
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.27.0"
   },
   "devDependencies": {},
   "scripts": {
