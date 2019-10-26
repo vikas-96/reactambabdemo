@@ -3,9 +3,34 @@ import { Form, FormGroup, Input, Label, Row, Col, Button } from "reactstrap";
 import { withFormik } from "formik";
 import * as yup from "yup";
 
+const onSubmit = async (values, { props }) => {
+  // setSubmitting(true);
+  // console.log(values);
+  try {
+    const res = await props.submithandler(values);
+    // if (res) {
+    //   props.setTimeoutFn(1000, res.data.message, "");
+    // }
+    // setSubmitting(false);
+  } catch (error) {
+    // if (error.response && error.response.status === 422) {
+    //   let errorData = getValidationErrors(error);
+    //   setErrors(errorData);
+    //   setSubmitting(false);
+    //   props.setTimeoutFn(1000, error.response.data.message, "error", false);
+    // } else if (axios.isCancel(error)) {
+    //   console.log("Request canceled");
+    // } else {
+    //   setSubmitting(false);
+    //   props.setTimeoutFn(1000, error.message, "error", false);
+    // }
+  }
+};
+
 const BorrowerFrom = props => {
+  const { handleSubmit } = props;
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={4}>
           <FormGroup>
@@ -61,7 +86,7 @@ export default withFormik({
     first_name: props.first_name,
     last_name: props.last_name,
     email: props.email
-  })
+  }),
   // validationSchema: props => userSchema(props),
-  // handleSubmit: onSubmit
+  handleSubmit: onSubmit
 })(BorrowerFrom);
