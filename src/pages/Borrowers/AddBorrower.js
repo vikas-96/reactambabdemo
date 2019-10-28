@@ -5,6 +5,7 @@ import _ from "lodash";
 class AddBorrowers extends React.Component {
   handleSubmit = data => {
     console.log(data);
+    return true;
     // createBorrower(data)
     //   .then(res => {
     //     this.props.history.push("/borrowers");
