@@ -11,17 +11,25 @@ import {
 } from "reactstrap";
 import { withFormik } from "formik";
 import * as yup from "yup";
+import getValidationErrors from "../../utils/getValidationErrors";
 
-const onSubmit = async (values, { props, setSubmitting }) => {
+const onSubmit = async (values, { props, setSubmitting, setErrors }) => {
   try {
-    setSubmitting(true);
     const res = await props.submithandler(values);
-    if (res.isValidationError) {
-      setSubmitting(false);
+    if (res) {
+      props.setTimeoutFn(1000, res.data.message, "");
     }
     setSubmitting(false);
   } catch (error) {
-    setSubmitting(false);
+    if (error.response && error.response.status === 422) {
+      let errorData = getValidationErrors(error);
+      setErrors(errorData);
+      setSubmitting(false);
+      props.setTimeoutFn(1000, error.response.data.message, "error", false);
+    } else {
+      setSubmitting(false);
+      props.setTimeoutFn(1000, error.message, "error", false);
+    }
   }
 };
 
@@ -30,10 +38,10 @@ const validationBorrowers = yup.object().shape({
     .string()
     .trim()
     .required("First Name is a required field."),
-  last_name: yup
-    .string()
-    .trim()
-    .required("Last Name is a required field."),
+  // last_name: yup
+  //   .string()
+  //   .trim()
+  //   .required("Last Name is a required field."),
   email: yup
     .string()
     .trim()

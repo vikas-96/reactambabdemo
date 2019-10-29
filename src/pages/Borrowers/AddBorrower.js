@@ -2,8 +2,7 @@ import React from "react";
 import BorrowerForm from "./BorrowerForm";
 import _ from "lodash";
 import { connect } from "react-redux";
-import getValidationErrors from "utils/getValidationErrors";
-import notify from "utils/notify";
+import notify from "../../utils/notify";
 import * as borrowerActions from "../../store/borrowers/action";
 
 class AddBorrowers extends React.Component {
@@ -18,14 +17,17 @@ class AddBorrowers extends React.Component {
     return this.props;
   };
 
-  setTimeoutFn = (time, message) => {
+  setTimeoutFn = (time, message, type = false, is_redirect = true) => {
     notify({
-      type: "success",
+      type: type || "success",
       text: message
+      //layout: "topCenter"
     });
-    setTimeout(() => {
-      this.props.history.push("/borrowers");
-    }, time);
+    if (is_redirect) {
+      setTimeout(() => {
+        this.props.history.replace("/borrowers");
+      }, time);
+    }
   };
 
   render() {
@@ -36,15 +38,13 @@ class AddBorrowers extends React.Component {
       <BorrowerForm
         submithandler={this.handleSubmit}
         {...this.props.borrowerData}
-        validationErrors={getValidationErrors(this.props)}
-        isValidationError={this.props.isValidationError}
+        setTimeoutFn={this.setTimeoutFn}
       />
     );
   }
 }
 
 function mapStateToProps(state) {
-  console.log();
   return {
     borrowerData: state.borrowers.borrowerData,
     error: state.borrowers.error,
