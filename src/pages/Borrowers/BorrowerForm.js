@@ -13,26 +13,15 @@ import { withFormik } from "formik";
 import * as yup from "yup";
 
 const onSubmit = async (values, { props, setSubmitting }) => {
-  setSubmitting(true);
-  // console.log(values);
   try {
+    setSubmitting(true);
     const res = await props.submithandler(values);
-    if (res) {
-      props.setTimeoutFn(1000, res.data.message, "");
+    if (res.isValidationError) {
+      setSubmitting(false);
     }
     setSubmitting(false);
   } catch (error) {
-    // if (error.response && error.response.status === 422) {
-    //   let errorData = getValidationErrors(error);
-    //   setErrors(errorData);
-    //   setSubmitting(false);
-    //   props.setTimeoutFn(1000, error.response.data.message, "error", false);
-    // } else if (axios.isCancel(error)) {
-    //   console.log("Request canceled");
-    // } else {
-    //   setSubmitting(false);
-    //   props.setTimeoutFn(1000, error.message, "error", false);
-    // }
+    setSubmitting(false);
   }
 };
 
@@ -53,7 +42,6 @@ const validationBorrowers = yup.object().shape({
 });
 
 const BorrowerFrom = props => {
-  console.log(props);
   const {
     handleSubmit,
     errors,
