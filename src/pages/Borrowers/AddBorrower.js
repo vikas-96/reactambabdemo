@@ -4,6 +4,7 @@ import _ from "lodash";
 import { connect } from "react-redux";
 import notify from "../../utils/notify";
 import * as borrowerActions from "../../store/borrowers/action";
+import getValidationErrors from "../../utils/getValidationErrors";
 
 class AddBorrowers extends React.Component {
   componentWillUnmount() {
@@ -17,17 +18,14 @@ class AddBorrowers extends React.Component {
     return this.props;
   };
 
-  setTimeoutFn = (time, message, type = false, is_redirect = true) => {
+  setTimeoutFn = (time, message) => {
     notify({
-      type: type || "success",
+      type: "success",
       text: message
-      //layout: "topCenter"
     });
-    if (is_redirect) {
-      setTimeout(() => {
-        this.props.history.replace("/borrowers");
-      }, time);
-    }
+    setTimeout(() => {
+      this.props.history.replace("/borrowers");
+    }, time);
   };
 
   render() {
@@ -38,7 +36,8 @@ class AddBorrowers extends React.Component {
       <BorrowerForm
         submithandler={this.handleSubmit}
         {...this.props.borrowerData}
-        setTimeoutFn={this.setTimeoutFn}
+        validationErrors={getValidationErrors(this.props)}
+        isValidationError={this.props.isValidationError}
       />
     );
   }

@@ -11,25 +11,40 @@ import {
 } from "reactstrap";
 import { withFormik } from "formik";
 import * as yup from "yup";
-import getValidationErrors from "../../utils/getValidationErrors";
 
-const onSubmit = async (values, { props, setSubmitting, setErrors }) => {
+// const onSubmit = async (values, { props, setSubmitting, setErrors }) => {
+//   try {
+//     const res = await props.submithandler(values);
+//     if (res) {
+//       props.setTimeoutFn(1000, res.data.message, "");
+//     }
+//     setSubmitting(false);
+//   } catch (error) {
+//     if (error.response && error.response.status === 422) {
+//       let errorData = getValidationErrors(error);
+//       setErrors(errorData);
+//       setSubmitting(false);
+//       props.setTimeoutFn(1000, error.response.data.message, "error", false);
+//     } else {
+//       setSubmitting(false);
+//       props.setTimeoutFn(1000, error.message, "error", false);
+//     }
+//   }
+// };
+
+const onSubmit = async (
+  values,
+  { props, setSubmitting, setErrors, setStatus }
+) => {
   try {
+    setSubmitting(true);
     const res = await props.submithandler(values);
-    if (res) {
-      props.setTimeoutFn(1000, res.data.message, "");
+    if (res.isValidationError) {
+      setSubmitting(false);
     }
     setSubmitting(false);
   } catch (error) {
-    if (error.response && error.response.status === 422) {
-      let errorData = getValidationErrors(error);
-      setErrors(errorData);
-      setSubmitting(false);
-      props.setTimeoutFn(1000, error.response.data.message, "error", false);
-    } else {
-      setSubmitting(false);
-      props.setTimeoutFn(1000, error.message, "error", false);
-    }
+    setSubmitting(false);
   }
 };
 
@@ -38,10 +53,10 @@ const validationBorrowers = yup.object().shape({
     .string()
     .trim()
     .required("First Name is a required field."),
-  // last_name: yup
-  //   .string()
-  //   .trim()
-  //   .required("Last Name is a required field."),
+  last_name: yup
+    .string()
+    .trim()
+    .required("Last Name is a required field."),
   email: yup
     .string()
     .trim()
@@ -56,8 +71,10 @@ const BorrowerFrom = props => {
     touched,
     handleBlur,
     isSubmitting,
-    dirty
+    dirty,
+    validationErrors
   } = props;
+  console.log(validationErrors);
   return (
     <Form onSubmit={handleSubmit}>
       <Row>
@@ -71,11 +88,16 @@ const BorrowerFrom = props => {
               placeholder="First Name"
               // defaultValue={this.props && this.props.first_name}
               onChange={props.handleChange}
-              invalid={!!(touched.first_name && errors.first_name)}
+              invalid={
+                Boolean(touched.first_name && errors.first_name) ||
+                validationErrors.first_name
+              }
               valid={!!(touched.first_name && !errors.first_name)}
               onBlur={handleBlur}
             />
-            <FormFeedback>{errors.first_name}</FormFeedback>
+            <FormFeedback>
+              {errors.first_name || validationErrors.first_name}
+            </FormFeedback>
           </FormGroup>
         </Col>
         <Col md={4}>
@@ -88,11 +110,16 @@ const BorrowerFrom = props => {
               placeholder="Last Name"
               // defaultValue={this.props && this.props.last_name}
               onChange={props.handleChange}
-              invalid={!!(touched.last_name && errors.last_name)}
+              invalid={
+                Boolean(touched.last_name && errors.last_name) ||
+                validationErrors.last_name
+              }
               valid={!!(touched.last_name && !errors.last_name)}
               onBlur={handleBlur}
             />
-            <FormFeedback>{errors.last_name}</FormFeedback>
+            <FormFeedback>
+              {errors.last_name || validationErrors.last_name}
+            </FormFeedback>
           </FormGroup>
         </Col>
         <Col md={4}>
@@ -105,11 +132,15 @@ const BorrowerFrom = props => {
               placeholder="Email-Id"
               // defaultValue={this.props && this.props.email}
               onChange={props.handleChange}
-              invalid={!!(touched.email && errors.email)}
+              invalid={
+                Boolean(touched.email && errors.email) || validationErrors.email
+              }
               valid={!!(touched.email && !errors.email)}
               onBlur={handleBlur}
             />
-            <FormFeedback>{errors.email}</FormFeedback>
+            <FormFeedback>
+              {errors.email || validationErrors.email}
+            </FormFeedback>
           </FormGroup>
         </Col>
       </Row>
