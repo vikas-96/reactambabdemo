@@ -11,6 +11,8 @@ import {
 } from "reactstrap";
 import { withFormik } from "formik";
 import * as yup from "yup";
+import DatePicker from "react-datepicker";
+import { format, parse, setMinutes, setHours } from "date-fns";
 
 // const onSubmit = async (values, { props, setSubmitting, setErrors }) => {
 //   try {
@@ -31,6 +33,19 @@ import * as yup from "yup";
 //     }
 //   }
 // };
+
+const checkboxes = [
+  {
+    name: "hob",
+    value: "cric",
+    label: "Cric"
+  },
+  {
+    name: "hob",
+    value: "ftbl",
+    label: "Ftbl"
+  }
+];
 
 const onSubmit = async (
   values,
@@ -72,9 +87,21 @@ const BorrowerFrom = props => {
     handleBlur,
     isSubmitting,
     dirty,
-    validationErrors
+    validationErrors,
+    values,
+    setFieldValue
   } = props;
-  console.log(validationErrors);
+
+  const _handledate = (name, date) => {
+    const formatedDate = date ? format(date, "yyyy-MM-dd") : "";
+    props.setFieldValue(name, formatedDate);
+  };
+
+  const _handlechange = (selectedItem, nameOfComponent) => {
+    setFieldValue(nameOfComponent.name, selectedItem.value);
+  };
+
+  console.log(values);
   return (
     <Form onSubmit={handleSubmit}>
       <Row>
@@ -144,6 +171,70 @@ const BorrowerFrom = props => {
           </FormGroup>
         </Col>
       </Row>
+      <Row>
+        <Col md={4}>
+          <FormGroup>
+            <Label for="gender">Gender</Label>
+            <br />
+            <Row>
+              <Col md={2}>
+                <Input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  onChange={() => setFieldValue("gender", "male")}
+                  selected={values.gender === "male"}
+                />
+                Male
+              </Col>
+              <Col md={2}>
+                <Input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  onChange={() => setFieldValue("gender", "female")}
+                  selected={values.gender === "female"}
+                />
+                Female
+              </Col>
+            </Row>
+          </FormGroup>
+        </Col>
+        <Col md={4}>
+          <FormGroup>
+            <Label for="hob">Hob</Label>
+            <br />
+            <Row>
+              {checkboxes.map((item, index) => (
+                <Col md={2} key={index}>
+                  <label>
+                    {item.label}
+                    <Input
+                      type="checkbox"
+                      name={item.name}
+                      value={item.value}
+                    />
+                  </label>
+                </Col>
+              ))}
+            </Row>
+          </FormGroup>
+        </Col>
+        <Col md={4}>
+          <FormGroup>
+            <Label for="npa_date">NPA Date</Label>
+            <DatePicker
+              name="npa_date"
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Select NPA date ..."
+              onChange={_handledate.bind(this, "npa_date")}
+              selected={
+                props.values.npa_date ? Date.parse(props.values.npa_date) : ""
+              }
+            />
+          </FormGroup>
+        </Col>
+      </Row>
       <Col md={4}>
         <Button type="submit" outline color="success">
           {isSubmitting === true ? "Please Wait..." : "Submit"}
@@ -157,7 +248,9 @@ export default withFormik({
   mapPropsToValues: props => ({
     first_name: props.first_name,
     last_name: props.last_name,
-    email: props.email
+    email: props.email,
+    npa_date: props.npa_date,
+    gender: props.gender
   }),
   validationSchema: validationBorrowers,
   handleSubmit: onSubmit

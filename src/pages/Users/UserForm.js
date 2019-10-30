@@ -187,6 +187,7 @@ class UserFrom extends React.Component {
                     type="radio"
                     name="gender"
                     value="male"
+                    inputId="gender"
                     // checked={gender === "male"}
                     checked={this.state.gender === "male" ? true : false}
                     onChange={this.handleChange}
@@ -198,6 +199,7 @@ class UserFrom extends React.Component {
                     type="radio"
                     name="gender"
                     value="female"
+                    inputId="gender"
                     // checked={gender === "female"}
                     checked={this.state.gender === "female" ? true : false}
                     onChange={this.handleChange}
