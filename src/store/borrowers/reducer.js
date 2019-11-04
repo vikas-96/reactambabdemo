@@ -14,13 +14,31 @@ const initialState = {
 
 export default function reduce(state = initialState, action = {}) {
   switch (action.type) {
+    //Fetch User Listing
+
+    case types.FETCH_BORROWER_BEGIN:
+      return {
+        ...state
+      };
+
+    case types.FETCH_BORROWER_SUCCESS:
+      return {
+        ...state,
+        borrowersArray: action.payload.borrower.data
+      };
+
+    case types.FETCH_BORROWER_FAILURE:
+      return {
+        ...state
+      };
+
+    //create
     case types.CREATE_BORROWER_BEGIN:
       return {
         ...state,
         isBorrowerCreated: false,
         error: null
       };
-      break;
 
     case types.CREATE_BORROWER_SUCCESS:
       return {
@@ -30,7 +48,6 @@ export default function reduce(state = initialState, action = {}) {
         isValidationError: false,
         error: null
       };
-      break;
 
     case types.CREATE_BORROWER_FAILURE:
       return {
@@ -41,13 +58,68 @@ export default function reduce(state = initialState, action = {}) {
         isValidationError: true,
         isBorrowerCreated: false
       };
-      break;
+
+    //update
+    case types.UPDATE_BORROWER_BEGIN:
+      return {
+        ...state,
+        isBorrowerUpdated: false,
+        error: null
+      };
+
+    case types.UPDATE_BORROWER_SUCCESS:
+      return {
+        ...state,
+        borrowerData: action.payload.borrower,
+        isBorrowerUpdated: true,
+        isValidationError: false,
+        error: null
+      };
+
+    case types.UPDATE_BORROWER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+        borrowerData: {},
+        isValidationError: true,
+        isBorrowerUpdated: false
+      };
+
+    //Get User
+
+    case types.GET_BORROWER_BEGIN:
+      return {
+        ...state,
+        error: {},
+        isBorrowerUpdated: false,
+        isBorrowerCreated: false,
+        isValidationError: false,
+        error: {},
+        borrowerDetail: {}
+      };
+
+    case types.GET_BORROWER_SUCCESS:
+      return {
+        ...state,
+        borrowerDetail: action.payload.borrowers,
+        isBorrowerUpdated: false,
+        error: {},
+        isBorrowerCreated: false,
+        isValidationError: false
+      };
+
+    case types.GET_BORROWER_FAILURE:
+      return {
+        ...state,
+        error: action.payload.error,
+        borrowerDetail: {}
+      };
 
     case types.RESET_ALL:
       return {
         initialState
       };
-      break;
 
     default:
       return state;

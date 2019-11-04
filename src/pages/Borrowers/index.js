@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import UserListing from "./Listing";
+import BorrowerListing from "./Listing";
 
 const Borrowers = () => {
   return (
@@ -8,7 +8,7 @@ const Borrowers = () => {
       <Link to="/borrowers/add" className="btn btn-success float-right">
         Add Borrower
       </Link>
-      {/* <UserListing /> */}
+      <BorrowerListing />
     </React.Fragment>
   );
 };

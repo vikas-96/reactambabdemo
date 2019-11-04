@@ -9,6 +9,7 @@ import AddUsers from "../../pages/Users/AddUsers";
 import EditUsers from "../../pages/Users/EditUsers";
 import Borrowers from "../../pages/Borrowers";
 import AddBorrowers from "../../pages/Borrowers/AddBorrower";
+import EditBorrower from "../../pages/Borrowers/EditBorrower";
 
 const Root = () => {
   return (
@@ -27,6 +28,11 @@ const Root = () => {
                 <Route exact path="/users/edit/:id" component={EditUsers} />
                 <Route exact path="/borrowers" component={Borrowers} />
                 <Route exact path="/borrowers/add" component={AddBorrowers} />
+                <Route
+                  exact
+                  path="/borrowers/edit/:id"
+                  component={EditBorrower}
+                />
                 {/* <Route path="/users">
                                 <About />
                             </Route>

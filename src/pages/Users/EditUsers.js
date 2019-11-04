@@ -26,15 +26,7 @@ class EditUsers extends React.Component {
 
   render() {
     return (
-      <UserForm
-        // statedata={this.state}
-        // changefunct={this.handleChange}
-        // SelectChange={this.handleSelectChange}
-        // handleDate={this.handleDate}
-        // fileChange={this.handleFile}
-        submithandler={this.handleSubmit}
-        {...this.props.userdata}
-      />
+      <UserForm submithandler={this.handleSubmit} {...this.props.userdata} />
     );
   }
 }

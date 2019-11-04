@@ -61,19 +61,16 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         userDetail: {}
       };
-      break;
 
     case types.GET_USER_SUCCESS:
       return {
         ...state,
         userDetail: action.payload.users
       };
-      break;
 
     case types.GET_USER_FAILURE:
       return {
         ...state
       };
-      break;
   }
 }

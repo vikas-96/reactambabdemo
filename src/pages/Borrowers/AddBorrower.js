@@ -1,16 +1,11 @@
 import React from "react";
 import BorrowerForm from "./BorrowerForm";
-import _ from "lodash";
 import { connect } from "react-redux";
 import notify from "../../utils/notify";
 import * as borrowerActions from "../../store/borrowers/action";
 import getValidationErrors from "../../utils/getValidationErrors";
 
 class AddBorrowers extends React.Component {
-  componentWillUnmount() {
-    this.props.dispatch(borrowerActions.resetAll());
-  }
-
   handleSubmit = async data => {
     try {
       await this.props.dispatch(borrowerActions.createBorrowerData(data));
@@ -30,7 +25,7 @@ class AddBorrowers extends React.Component {
 
   render() {
     if (this.props.isBorrowerCreated) {
-      this.setTimeoutFn(1000, "User created successfully!");
+      this.setTimeoutFn(1000, "Borrower created successfully!");
     }
     return (
       <BorrowerForm
