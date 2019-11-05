@@ -11,6 +11,7 @@ import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import { connect } from "react-redux";
 import * as borrowerActions from "../../store/borrowers/action";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 const { SearchBar } = Search;
 
@@ -22,8 +23,9 @@ class Listing extends React.Component {
   deleteUser = id => {
     let r = window.confirm("Do you want to delete this user");
     if (r === true) {
-      this.props.dispatch;
-      // borrowerActions.deleteBorrowers(id, this.props.users)();
+      this.props.dispatch(
+        borrowerActions.deleteBorrowers(id, this.props.borrowers)
+      );
     }
   };
 
@@ -107,7 +109,7 @@ class Listing extends React.Component {
     );
   };
   render() {
-    console.log(this.props.borrowers);
+    if (_.isEmpty(this.props.borrowers)) return <p>Loading...</p>;
     return (
       <div>
         <h2 className="text-center">Borrowers Details</h2>

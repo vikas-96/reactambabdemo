@@ -32,6 +32,29 @@ export default function reduce(state = initialState, action = {}) {
         ...state
       };
 
+    // Delete Borrower
+
+    case types.DELETE_BORROWER_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        error: {}
+      };
+
+    case types.DELETE_BORROWER_SUCCESS:
+      return {
+        ...state,
+        borrowersArray: action.payload.borrower,
+        isLoading: false
+      };
+
+    case types.DELETE_BORROWER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+
     //create
     case types.CREATE_BORROWER_BEGIN:
       return {

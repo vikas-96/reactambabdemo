@@ -49,3 +49,15 @@ export function updateBorrower(data, userid) {
     })
     .then(response => response.data);
 }
+
+// delete Borrower
+export function deleteBorrower(data) {
+  return axios
+    .delete(process.env.REACT_APP_API_URL + "/api/borrowerdemo/" + data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.data);
+}

@@ -83,3 +83,23 @@ export const getBorrowerFailure = error => ({
   type: GET_BORROWER_FAILURE,
   payload: { error }
 });
+
+// ---------------------------------Delete Borrower -------------------------------------------------
+
+export const DELETE_BORROWER_BEGIN = "DELETE_BORROWER_BEGIN";
+export const DELETE_BORROWER_SUCCESS = "DELETE_BORROWER_SUCCESS";
+export const DELETE_BORROWER_FAILURE = "DELETE_BORROWER_FAILURE";
+
+export const deleteBorrowerBegin = () => ({
+  type: DELETE_BORROWER_BEGIN
+});
+
+export const deleteBorrowerSuccess = borrower => ({
+  type: DELETE_BORROWER_SUCCESS,
+  payload: { borrower }
+});
+
+export const deleteBorrowerFailure = error => ({
+  type: DELETE_BORROWER_FAILURE,
+  payload: { error }
+});

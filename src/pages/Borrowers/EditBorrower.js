@@ -1,9 +1,10 @@
 import React from "react";
 import BorrowerForm from "./BorrowerForm";
 import { connect } from "react-redux";
-// import _ from "lodash";
+import _ from "lodash";
 import * as borrowerActions from "../../store/borrowers/action";
 import getValidationErrors from "../../utils/getValidationErrors";
+import notify from "../../utils/notify";
 
 class EditBorrower extends React.Component {
   handleSubmit = async data => {
@@ -18,11 +19,25 @@ class EditBorrower extends React.Component {
     this.props.dispatch(borrowerActions.getBorrower(borrowerid));
   }
 
-  //   componentWillUnmount() {
-  //     this.props.dispatch(borrowerActions.resetAll());
-  //   }
+  componentWillUnmount() {
+    this.props.dispatch(borrowerActions.resetAll());
+  }
+
+  setTimeoutFn = (time, message) => {
+    notify({
+      type: "success",
+      text: message
+    });
+    setTimeout(() => {
+      this.props.history.replace("/borrowers");
+    }, time);
+  };
 
   render() {
+    if (this.props.isBorrowerUpdated) {
+      this.setTimeoutFn(1000, "Borrower updated successfully");
+    }
+    if (_.isEmpty(this.props.borrowerdata)) return <p>Loading...</p>;
     return (
       <BorrowerForm
         submithandler={this.handleSubmit}
@@ -36,7 +51,10 @@ class EditBorrower extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    borrowerdata: state.borrowers.borrowerDetail
+    borrowerdata: state.borrowers.borrowerDetail,
+    error: state.borrowers.error,
+    isBorrowerUpdated: state.borrowers.isBorrowerUpdated,
+    isValidationError: state.borrowers.isValidationError
   };
 }
 

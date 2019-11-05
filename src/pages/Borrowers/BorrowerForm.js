@@ -55,6 +55,7 @@ const onSubmit = async (
   { props, setSubmitting, setErrors, setStatus }
 ) => {
   try {
+    console.log(values);
     setSubmitting(true);
     const res = await props.submithandler(values);
     if (res.isValidationError) {
@@ -350,7 +351,6 @@ const BorrowerFrom = props => {
 };
 
 export default withFormik({
-  enableReinitialize: true,
   mapPropsToValues: props => ({
     first_name: props.first_name,
     last_name: props.last_name,

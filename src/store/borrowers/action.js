@@ -3,7 +3,8 @@ import {
   createBorrower,
   getBorrowers,
   updateBorrower,
-  showBorrower
+  showBorrower,
+  deleteBorrower
 } from "../../request/borrowers";
 
 export function fetchBorrowers() {
@@ -43,6 +44,18 @@ export function updateBorrowerData(borrowerid, data) {
     updateBorrower(data, borrowerid)
       .then(json => dispatch(types.updateBorrowerSuccess(json)))
       .catch(error => dispatch(types.updateBorrowerFailure(error)));
+  };
+}
+
+export function deleteBorrowers(id, borrowerlist) {
+  return async (dispatch, getState) => {
+    dispatch(types.deleteBorrowerBegin());
+    return await deleteBorrower(id)
+      .then(json => {
+        const borrowernewaray = borrowerlist.filter(row => row.id !== id);
+        dispatch(types.deleteBorrowerSuccess(borrowernewaray));
+      })
+      .catch(error => dispatch(types.deleteBorrowerFailure(error)));
   };
 }
 
