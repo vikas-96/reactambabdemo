@@ -7,19 +7,55 @@ import {
   Input,
   FormFeedback
 } from "reactstrap";
+import { Formik } from "formik";
+import { login } from "../../request/auth";
+import notify from "../../utils/notify";
+import getErrorMessage from "../../utils/getErrorMessage";
 
-ReactComponent;
+// const initialValues = {
+//   username: "",
+//   password: "",
+//   serverError: ""
+// };
+
 class Login extends Component {
+  onSubmit = async (values, { setSubmitting, setErrors, setStatus }) => {
+    try {
+      // setSubmitting(true);
+      // console.log(values);
+      try {
+        const user = await login({
+          username: values.username,
+          password: values.password
+        });
+        localStorage.setItem("userDetails", JSON.stringify(user));
+        // <Redirect to="/users" />;
+        this.props.history.replace("/users");
+        // setSubmitting(false);
+      } catch (error) {
+        if (error.response.status === 401) {
+          notify({
+            type: "error",
+            text: getErrorMessage(error.response.data)
+          });
+        }
+      }
+    } catch (error) {
+      // setSubmitting(false);
+      setErrors({ serverError: "Invalid username or password" });
+    }
+  };
+
   render() {
     return (
       <div className="card card-login mx-auto mt-5">
         <div className="card-header text-center">
-          <img src="/images/logo.png" alt="m2all-logo" />{" "}
+          <img src="/images/logo.png" alt="demo-logo" width="70px" />{" "}
         </div>
         <div className="card-body">
           <Formik
-            initialValues={initialValues}
-            validationSchema={loginSchema}
+            // initialValues={initialValues}
+            // validationSchema={loginSchema}
             onSubmit={this.onSubmit}
             render={({
               touched,
@@ -35,52 +71,54 @@ class Login extends Component {
                 <FormGroup>
                   <div className="form-label-group">
                     <Input
-                      innerRef={username => (this.username = username)}
+                      // innerRef={username => (this.username = username)}
+                      name="username"
                       type="text"
-                      id="inputUsername"
+                      id="username"
                       placeholder="Username"
                       //autoFocus
                       onChange={handleChange}
-                      onBlur={handleBlur}
-                      invalid={Boolean(
-                        (touched.inputUsername && errors.inputUsername) ||
-                          errors.serverError
-                      )}
-                      valid={touched.inputUsername && !errors.inputUsername}
+                      // onBlur={handleBlur}
+                      // invalid={Boolean(
+                      //   (touched.inputUsername && errors.inputUsername) ||
+                      //     errors.serverError
+                      // )}
+                      // valid={touched.inputUsername && !errors.inputUsername}
                       autoComplete="off"
-                      disabled={isSubmitting}
+                      // disabled={isSubmitting}
                     />
                     <Label for="inputUsername">Username</Label>
-                    <FormFeedback>{errors.inputUsername}</FormFeedback>
+                    {/* <FormFeedback>{errors.inputUsername}</FormFeedback> */}
                   </div>
                 </FormGroup>
                 <FormGroup>
                   <div className="form-label-group">
                     <Input
-                      innerRef={password => (this.password = password)}
+                      // innerRef={password => (this.password = password)}
+                      name="password"
                       type="password"
-                      id="inputPassword"
+                      id="password"
                       onChange={handleChange}
-                      onBlur={handleBlur}
+                      // onBlur={handleBlur}
                       autoComplete="off"
                       placeholder="Password"
-                      invalid={Boolean(
-                        (touched.inputPassword && errors.inputPassword) ||
-                          errors.serverError
-                      )}
-                      valid={touched.inputPassword && !errors.inputPassword}
-                      disabled={isSubmitting}
+                      // invalid={Boolean(
+                      //   (touched.inputPassword && errors.inputPassword) ||
+                      //     errors.serverError
+                      // )}
+                      // valid={touched.inputPassword && !errors.inputPassword}
+                      // disabled={isSubmitting}
                     />
                     <Label for="inputPassword">Password</Label>
 
                     <FormFeedback>
-                      {errors.inputPassword || errors.serverError}
+                      {/* {errors.inputPassword || errors.serverError} */}
                     </FormFeedback>
                   </div>
                 </FormGroup>
                 <Button
-                  disabled={isSubmitting || !isValid}
-                  size="lg"
+                  // disabled={isSubmitting || !isValid}
+                  size="sm"
                   type="submit"
                   color="primary"
                   block
@@ -91,9 +129,9 @@ class Login extends Component {
             )}
           />
           <div className="text-center mt-3">
-            <Link to="/auth/forgot" className="d-block small">
+            {/* <Link to="/auth/forgot" className="d-block small">
               Forgot Password?
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

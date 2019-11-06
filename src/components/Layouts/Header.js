@@ -1,6 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "reactstrap";
+import logout from "../../pages/Auth/Logout";
 
 class Header extends React.Component {
   render() {
@@ -34,13 +35,11 @@ class Header extends React.Component {
                 Borrower
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink className="nav-link arrow-down" to="/">
-                #1
-              </NavLink>
-            </NavItem>
           </Nav>
         </Navbar>
+        <Link onClick={logout} to="/">
+          Logout
+        </Link>
       </React.Fragment>
     );
   }
