@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 import * as borrowerActions from "../../store/borrowers/action";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+// import notify from "../../utils/notify";
+// import getErrorMessage from "../../utils/getErrorMessage";
 
 const { SearchBar } = Search;
 
@@ -32,7 +34,7 @@ class Listing extends React.Component {
   columns = () => {
     return [
       {
-        dataField: "",
+        dataField: "id",
         text: "Sr No.",
         formatter: (value, row, index) => {
           return index + 1;
@@ -109,6 +111,13 @@ class Listing extends React.Component {
     );
   };
   render() {
+    // if (!_.isEmpty(this.props.error)) {
+    //   // console.log(this.props.error);
+    //   notify({
+    //     type: "error",
+    //     text: getErrorMessage(this.props.error)
+    //   });
+    // }
     if (_.isEmpty(this.props.borrowers)) return <p>Loading...</p>;
     return (
       <div>
@@ -143,7 +152,8 @@ class Listing extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    borrowers: state.borrowers.borrowersArray
+    borrowers: state.borrowers.borrowersArray,
+    error: state.borrowers.error
   };
 }
 

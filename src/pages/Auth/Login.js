@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import initAxios from "../../utils/initAxios";
 import {
   Button,
   Form,
@@ -11,6 +12,8 @@ import { Formik } from "formik";
 import { login } from "../../request/auth";
 import notify from "../../utils/notify";
 import getErrorMessage from "../../utils/getErrorMessage";
+import { connect } from "react-redux";
+import * as types from "../../store/auth/actionTypes";
 
 // const initialValues = {
 //   username: "",
@@ -21,18 +24,23 @@ import getErrorMessage from "../../utils/getErrorMessage";
 class Login extends Component {
   onSubmit = async (values, { setSubmitting, setErrors, setStatus }) => {
     try {
-      // setSubmitting(true);
+      setSubmitting(true);
       // console.log(values);
       try {
+        this.props.dispatch(types.loginBegin());
         const user = await login({
           username: values.username,
           password: values.password
         });
         localStorage.setItem("userDetails", JSON.stringify(user));
-        // <Redirect to="/users" />;
+
+        this.props.dispatch(types.loginSuccess());
+
+        initAxios();
         this.props.history.replace("/users");
-        // setSubmitting(false);
+        setSubmitting(false);
       } catch (error) {
+        this.props.dispatch(types.loginFailure());
         if (error.response.status === 401) {
           notify({
             type: "error",
@@ -41,7 +49,7 @@ class Login extends Component {
         }
       }
     } catch (error) {
-      // setSubmitting(false);
+      setSubmitting(false);
       setErrors({ serverError: "Invalid username or password" });
     }
   };
@@ -117,7 +125,7 @@ class Login extends Component {
                   </div>
                 </FormGroup>
                 <Button
-                  // disabled={isSubmitting || !isValid}
+                  disabled={isSubmitting || !isValid}
                   size="sm"
                   type="submit"
                   color="primary"
@@ -139,4 +147,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect()(Login);

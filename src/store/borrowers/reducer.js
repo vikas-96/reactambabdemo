@@ -29,7 +29,8 @@ export default function reduce(state = initialState, action = {}) {
 
     case types.FETCH_BORROWER_FAILURE:
       return {
-        ...state
+        ...state,
+        error: action.payload.error
       };
 
     // Delete Borrower

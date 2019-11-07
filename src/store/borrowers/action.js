@@ -14,7 +14,9 @@ export function fetchBorrowers() {
       .then(json => {
         dispatch(types.fetchBorrowerSuccess(json));
       })
-      .catch(error => dispatch(types.fetchBorrowerFailure(error)));
+      .catch(error => {
+        dispatch(types.fetchBorrowerFailure(error.response));
+      });
   };
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import Users from "../../pages/Users";
 import AddUsers from "../../pages/Users/AddUsers";
 import EditUsers from "../../pages/Users/EditUsers";

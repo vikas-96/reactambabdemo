@@ -11,6 +11,7 @@ import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import { connect } from "react-redux";
 import * as userActions from "../../store/users/actions";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 const { SearchBar } = Search;
 
@@ -29,7 +30,7 @@ class Listing extends React.Component {
   columns = () => {
     return [
       {
-        dataField: "",
+        dataField: "id",
         text: "Sr No.",
         formatter: (value, row, index) => {
           return index + 1;
@@ -116,6 +117,7 @@ class Listing extends React.Component {
     );
   };
   render() {
+    if (_.isEmpty(this.props.users)) return <p>Loading...</p>;
     return (
       <div>
         <h2 className="text-center">User Details</h2>
