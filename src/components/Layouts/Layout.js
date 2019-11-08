@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 export const PublicLayout = ({ component: Component, ...rest }) => {
   return (
@@ -24,17 +24,13 @@ export const PrivateLayout = ({
   return (
     <Route
       {...rest}
-      render={props =>
-        authenticated ? (
-          <div className="wrapper">
-            <Header />
-            <Component {...props} />
-            <Footer />
-          </div>
-        ) : (
-          <Redirect to="/" />
-        )
-      }
+      render={props => (
+        <div className="wrapper">
+          <Header />
+          <Component {...props} />
+          <Footer />
+        </div>
+      )}
     />
   );
 };

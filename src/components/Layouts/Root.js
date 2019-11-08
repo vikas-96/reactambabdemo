@@ -12,6 +12,7 @@ import Login from "../../pages/Auth/Login";
 import { PublicLayout, PrivateLayout } from "./Layout";
 
 const Root = () => {
+  // console.log(checkAuth());
   return (
     <React.Fragment>
       <Helmet titleTemplate="%s | User">
@@ -25,41 +26,23 @@ const Root = () => {
               <Switch>
                 <PublicLayout path="/" exact component={Login} />
                 {/* <Route path="/logout" exact component={Logout} /> */}
-                <PrivateLayout
-                  exact
-                  path="/users"
-                  component={Users}
-                  authenticated={true}
-                />
-                <PrivateLayout
-                  exact
-                  path="/users/add"
-                  component={AddUsers}
-                  authenticated={true}
-                />
+                <PrivateLayout exact path="/users" component={Users} />
+                <PrivateLayout exact path="/users/add" component={AddUsers} />
                 <PrivateLayout
                   exact
                   path="/users/edit/:id"
                   component={EditUsers}
-                  authenticated={true}
                 />
-                <PrivateLayout
-                  exact
-                  path="/borrowers"
-                  component={Borrowers}
-                  authenticated={true}
-                />
+                <PrivateLayout exact path="/borrowers" component={Borrowers} />
                 <PrivateLayout
                   exact
                   path="/borrowers/add"
                   component={AddBorrowers}
-                  authenticated={true}
                 />
                 <PrivateLayout
                   exact
                   path="/borrowers/edit/:id"
                   component={EditBorrower}
-                  authenticated={true}
                 />
                 {/* <Route exact path="/" component={Login} />
                 <Route exact path="/users" component={Users} />

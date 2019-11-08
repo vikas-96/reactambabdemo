@@ -12,8 +12,6 @@ import { Formik } from "formik";
 import { login } from "../../request/auth";
 import notify from "../../utils/notify";
 import getErrorMessage from "../../utils/getErrorMessage";
-import { connect } from "react-redux";
-import * as types from "../../store/auth/actionTypes";
 
 // const initialValues = {
 //   username: "",
@@ -27,20 +25,16 @@ class Login extends Component {
       setSubmitting(true);
       // console.log(values);
       try {
-        this.props.dispatch(types.loginBegin());
         const user = await login({
           username: values.username,
           password: values.password
         });
         localStorage.setItem("userDetails", JSON.stringify(user));
 
-        this.props.dispatch(types.loginSuccess());
-
         initAxios();
         this.props.history.replace("/users");
         setSubmitting(false);
       } catch (error) {
-        this.props.dispatch(types.loginFailure());
         if (error.response.status === 401) {
           notify({
             type: "error",
@@ -147,4 +141,4 @@ class Login extends Component {
   }
 }
 
-export default connect()(Login);
+export default Login;

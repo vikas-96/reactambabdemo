@@ -36,10 +36,10 @@ class Header extends React.Component {
               </NavLink>
             </NavItem>
           </Nav>
+          <Link onClick={logout} to="/" className="btn btn-danger float-right">
+            Logout
+          </Link>
         </Navbar>
-        <Link onClick={logout} to="/">
-          Logout
-        </Link>
       </React.Fragment>
     );
   }

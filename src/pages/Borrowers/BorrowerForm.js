@@ -214,7 +214,7 @@ const BorrowerFrom = props => {
                   name="gender"
                   value="male"
                   onChange={() => setFieldValue("gender", "male")}
-                  selected={values.gender === "male"}
+                  checked={values.gender === "male"}
                 />
                 Male
               </Col>
@@ -224,7 +224,7 @@ const BorrowerFrom = props => {
                   name="gender"
                   value="female"
                   onChange={() => setFieldValue("gender", "female")}
-                  selected={values.gender === "female"}
+                  checked={values.gender === "female"}
                   invalid={
                     Boolean(touched.gender && errors.gender) ||
                     validationErrors.gender
